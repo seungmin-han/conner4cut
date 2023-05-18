@@ -1,13 +1,44 @@
 <template>
 	<div class="main">
 		<h1>Conner 4 Cuts</h1>
-		<NuxtLink to="/studio">
-			<button class="start-btn btn">Press to Start</button>
-		</NuxtLink>
+		<button
+			class="start-btn btn"
+			@click="start"
+		>
+			Press to Start
+			<div class="arrow"></div>
+		</button>
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+	import { gsap } from 'gsap';
+
+	const start = () => {
+		gsap.to('.main', {
+			y: -300,
+			opacity: 0,
+			duration: 0.5,
+		}).then(() => {
+			useRouter().push('/studio');
+		});
+	};
+
+	onMounted(() => {
+		gsap.from('.main', {
+			y: -300,
+			opacity: 0,
+			duration: 0.5,
+		});
+
+		gsap.to('.arrow', {
+			y: 15,
+			repeat: -1,
+			yoyo: true,
+			duration: 1,
+		});
+	});
+</script>
 
 <style lang="scss" scoped>
 	.main {
@@ -22,14 +53,30 @@
 		}
 
 		.start-btn {
-			margin-top: 40px;
+			top: 250px;
+			position: relative;
+			.arrow {
+				position: absolute;
+				top: 80px;
+				left: 50%;
+				width: 30px;
+				height: 30px;
+				transform-origin: center;
+				transform: translateX(-50%) rotate(45deg);
+				border-width: 0 5px 5px 0px;
+				border-color: #787878;
+				border-style: solid;
+			}
 		}
 		.btn {
-			font: 1em;
+			cursor: pointer;
+			font-size: 1.5em;
 			font-weight: bold;
 			padding: 6px 12px;
 			border-radius: 10px;
 			height: 50px;
+			color: #454545;
+			border: none;
 			background: none;
 		}
 	}
