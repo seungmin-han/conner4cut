@@ -3,6 +3,9 @@
 		<div id="content">
 			<slot />
 		</div>
+		<div class="footer">
+			<a href="https://github.com/seungmin-han">Copyright © SEUNGMIN HAN 2023. All rights reserved.</a>
+		</div>
 		<!-- <Footer></Footer> -->
 	</div>
 </template>
@@ -34,6 +37,17 @@
 
 		#content {
 			flex: 1;
+		}
+
+		.footer {
+			position: fixed;
+			left: 5px;
+			bottom: 0px;
+			a {
+				text-decoration: underline;
+				font-family: consolas;
+				color: #000;
+			}
 		}
 	}
 </style>
