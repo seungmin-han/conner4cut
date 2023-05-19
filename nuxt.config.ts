@@ -2,5 +2,6 @@
 export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
-    ]
+    ],
+    ssr: false,
 })
