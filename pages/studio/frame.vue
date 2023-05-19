@@ -13,7 +13,7 @@
 		<div
 			ref="frame"
 			class="frame"
-			:class="{ shadow: isCopied }"
+			:class="{ shadow: !isCopied }"
 			:style="`background-color:${color}`"
 		>
 			<div class="logo">
@@ -68,8 +68,6 @@
 
 	const color = ref('#ffffff');
 
-	let photo = reactive(null);
-
 	const fontColor = computed(() => {
 		const red = parseInt(color.value.slice(1, 3), 16);
 		const green = parseInt(color.value.slice(3, 5), 16);
@@ -88,11 +86,6 @@
 			opacity: 0,
 			duration: 0.5,
 		});
-
-		html2canvas(frame.value).then(canvas => {
-			isCopied.value = true;
-			photo = canvas;
-		});
 	});
 
 	const fadeOut = async () => {
@@ -110,10 +103,16 @@
 	};
 
 	const download = () => {
-		let link = document.createElement('a');
-		link.download = 'Conner4Cuts.jpg';
-		link.href = photo.toDataURL('image/jpeg');
-		link.click();
+		isCopied.value = true;
+		setTimeout(() => {
+			html2canvas(frame.value).then(canvas => {
+				isCopied.value = false;
+				let link = document.createElement('a');
+				link.download = 'Conner4Cuts.jpg';
+				link.href = canvas.toDataURL('image/jpeg');
+				link.click();
+			});
+		}, 0);
 	};
 </script>
 
