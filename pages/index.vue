@@ -32,7 +32,7 @@
 		});
 
 		gsap.to('.arrow', {
-			y: 15,
+			top: 45,
 			repeat: -1,
 			yoyo: true,
 			duration: 1,
