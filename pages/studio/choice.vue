@@ -1,7 +1,10 @@
 <template>
 	<div class="main">
 		<div class="frame">
-			<div v-for="(image, idx) in store.images">
+			<div
+				v-for="(image, idx) in store.images"
+				class="image"
+			>
 				<div
 					:class="{ selected: store.isSelected(idx) }"
 					@click="pick(idx)"
@@ -14,12 +17,35 @@
 					@click="pick(idx)"
 				/>
 			</div>
+			<div class="select_count">
+				<span>{{ store.selectedIndex.size }} / 4</span>
+			</div>
+		</div>
+		<div
+			class="btn film"
+			:class="{ active: store.selectedIndex.size == 4 }"
+			@click="nextStep"
+		>
+			<img
+				src="~/assets/images/film.png"
+				alt=""
+				width="70"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup>
+	import { gsap } from 'gsap';
 	import { useImageStore } from '~/stores/image';
+
+	onMounted(() => {
+		gsap.from('.main', {
+			y: -300,
+			opacity: 0,
+			duration: 0.5,
+		});
+	});
 
 	const store = useImageStore();
 
@@ -32,6 +58,19 @@
 			}
 			store.select(idx);
 		}
+	};
+
+	const nextStep = () => {
+		if (store.selectedIndex.size != 4) {
+			return;
+		}
+		gsap.to('.main', {
+			y: -300,
+			opacity: 0,
+			duration: 0.5,
+		}).then(() => {
+			useRouter().push('/studio/frame');
+		});
 	};
 </script>
 
@@ -53,7 +92,7 @@
 			background-color: #fff;
 			padding: 50px 10px;
 			box-shadow: 0px 0px 10px;
-			div {
+			.image {
 				position: relative;
 				height: auto;
 				width: calc(50% - 5px);
@@ -73,6 +112,40 @@
 					width: 100%;
 					transform: rotateY(180deg);
 				}
+			}
+
+			.select_count {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+				span {
+					font-size: 1.2em;
+				}
+			}
+		}
+		.film {
+			opacity: 0.3;
+			position: fixed;
+			bottom: 30px;
+			right: 30px;
+			cursor: pointer;
+			transform-origin: 50% 50%;
+			&.active {
+				opacity: 1;
+				animation: shaking 0.1s ease-in;
+			}
+		}
+
+		@keyframes shaking {
+			0% {
+				transform: rotate(-5deg);
+			}
+
+			90% {
+				transform: rotate(5deg);
+			}
+			100% {
+				transform: rotate(0deg);
 			}
 		}
 	}
