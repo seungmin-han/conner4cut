@@ -124,10 +124,10 @@
 					gsap.to('.main', {
 						opacity: 0,
 						y: -300,
-						duration: 1.5,
+						duration: 0.5,
+					}).then(() => {
+						useRouter().replace('/studio/choice');
 					});
-
-					useRouter().replace('/studio/choice');
 				}
 			});
 		});
