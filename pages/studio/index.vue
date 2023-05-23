@@ -164,10 +164,15 @@
 					opacity: 0,
 					duration: 0.5,
 				});
+
+				onKeyStroke(' ', e => {
+					e.preventDefault();
+					takePhoto();
+				});
 			};
 		} catch (e) {
 			// go home
-			// useRouter().push('/');
+			useRouter().push('/');
 			console.log('error:', e);
 		}
 	};

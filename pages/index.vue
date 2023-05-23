@@ -25,6 +25,11 @@
 	};
 
 	onMounted(() => {
+		onKeyStroke(' ', e => {
+			e.preventDefault();
+			start();
+		});
+
 		gsap.from('.main', {
 			y: -300,
 			opacity: 0,
