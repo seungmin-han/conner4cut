@@ -16,6 +16,7 @@
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/core": "^10.1.2",
     "@vueuse/nuxt": "^10.1.2",
+    "firebase": "^9.22.0",
     "gsap": "^3.11.5",
     "html2canvas": "^1.4.1",
     "pinia": "^2.1.1",
