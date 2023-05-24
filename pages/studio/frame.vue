@@ -32,6 +32,16 @@
 		</div>
 		<div class="btn-group">
 			<div
+				class="btn upload"
+				@click="upload"
+			>
+				<img
+					src="~/assets/images/upload.png"
+					alt=""
+					width="65"
+				/>
+			</div>
+			<div
 				class="btn download"
 				@click="download"
 			>
@@ -59,8 +69,13 @@
 	import { gsap } from 'gsap';
 	import html2canvas from 'html2canvas';
 	import { useImageStore } from '~/stores/image';
+	import { useKakaoStore } from '~/stores/kakao';
+	import { initializeApp } from 'firebase/app';
+	import { getDatabase, ref as fbref, set as fbset, push as fbpush, child as fbchild } from 'firebase/database';
+	import dayjs from 'dayjs';
 
-	const store = useImageStore();
+	const imageStore = useImageStore();
+	const kakaoStore = useKakaoStore();
 
 	const frame = ref('');
 
@@ -76,11 +91,16 @@
 		return red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#ffffff';
 	});
 
-	const selectedImage = [...store.selectedIndex].map(v => {
-		return store.images[v];
+	const config = useRuntimeConfig();
+	const app = initializeApp(config.public.firebaseConfig);
+	const db = getDatabase(app);
+
+	const selectedImage = [...imageStore.selectedIndex].map(v => {
+		return imageStore.images[v];
 	});
 
 	onMounted(() => {
+		Kakao.init(useRuntimeConfig().public.kakaoConfig.jsKey);
 		gsap.from('.main', {
 			y: -300,
 			opacity: 0,
@@ -102,17 +122,53 @@
 		});
 	};
 
+	const getPhotoDataURL = async () => {
+		isCopied.value = true;
+		return new Promise((resolve, reject) =>
+			setTimeout(() => {
+				html2canvas(frame.value)
+					.then(canvas => {
+						isCopied.value = false;
+						resolve(canvas.toDataURL('image/jpeg'));
+					})
+					.catch(err => {
+						reject(err);
+					});
+			}, 0)
+		);
+	};
+
 	const download = () => {
 		isCopied.value = true;
-		setTimeout(() => {
-			html2canvas(frame.value).then(canvas => {
-				isCopied.value = false;
-				let link = document.createElement('a');
-				link.download = 'Conner4Cuts.jpg';
-				link.href = canvas.toDataURL('image/jpeg');
-				link.click();
-			});
-		}, 0);
+		getPhotoDataURL().then(url => {
+			let link = document.createElement('a');
+			link.download = 'Conner4Cuts.jpg';
+			link.href = url;
+			link.click();
+		});
+	};
+
+	const upload = link => {
+		const win = window.open('/login', 'login', '_top', 'width=300,height=500');
+		const timer = setInterval(() => {
+			if (win.closed) {
+				clearInterval(timer);
+				console.log(sessionStorage.getItem('token'));
+				Kakao.Auth.setAccessToken(sessionStorage.getItem('token'));
+				Kakao.API.request({
+					url: '/v2/user/me',
+				}).then(res => {
+					kakaoStore.id = res.id;
+					getPhotoDataURL().then(url => {
+						const newKey = fbpush(fbchild(fbref(db), `photo/${res.id}`)).key;
+						fbset(fbref(db, `photo/${res.id}/${newKey}`), {
+							href: url,
+							timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
+						});
+					});
+				});
+			}
+		}, 1000);
 	};
 </script>
 
@@ -188,6 +244,9 @@
 			right: 30px;
 			display: flex;
 			.btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				padding: 0 10px;
 				cursor: pointer;
 			}
