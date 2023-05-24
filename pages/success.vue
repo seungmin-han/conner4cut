@@ -13,7 +13,7 @@
 			'https://kauth.kakao.com/oauth/token',
 			{
 				client_id: useRuntimeConfig().public.kakaoConfig.restApiKey,
-				redirect_uri: 'http://localhost:3000/success',
+				redirect_uri: `${window.location.origin}/success`,
 				grant_type: 'authorization_code',
 				code: code,
 			},
