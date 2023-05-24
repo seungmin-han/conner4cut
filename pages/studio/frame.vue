@@ -63,17 +63,23 @@
 				/>
 			</div>
 		</div>
+		<Toast
+			v-if="showToast"
+			text="upload success!"
+			@close="showToast = false"
+		></Toast>
 	</div>
 </template>
 
 <script setup>
-	import { gsap } from 'gsap';
 	import html2canvas from 'html2canvas';
 	import { useImageStore } from '~/stores/image';
 	import { useKakaoStore } from '~/stores/kakao';
 	import { initializeApp } from 'firebase/app';
 	import { getDatabase, ref as fbref, set as fbset, push as fbpush, child as fbchild } from 'firebase/database';
 	import dayjs from 'dayjs';
+
+	let showToast = ref(false);
 
 	const imageStore = useImageStore();
 	const kakaoStore = useKakaoStore();
@@ -129,7 +135,7 @@
 		});
 	};
 
-	const upload = link => {
+	const upload = () => {
 		const win = window.open('/login', 'login', '_top', 'width=300,height=500');
 		const timer = setInterval(() => {
 			if (win.closed) {
@@ -144,6 +150,8 @@
 						fbset(fbref(db, `photo/${res.id}/${newKey}`), {
 							href: url,
 							timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
+						}).then(() => {
+							showToast.value = true;
 						});
 					});
 				});
