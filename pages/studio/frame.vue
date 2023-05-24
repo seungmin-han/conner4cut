@@ -121,10 +121,6 @@
 	});
 
 	onMounted(() => {
-		if (!Kakao.isInitialized()) {
-			Kakao.init(useRuntimeConfig().public.kakaoConfig.jsKey);
-		}
-
 		fadeIn();
 	});
 
