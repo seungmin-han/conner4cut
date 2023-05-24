@@ -28,7 +28,11 @@ export default defineNuxtConfig({
                 appId: "1:223296145979:web:2fca5e746a27c3a1ed2a1e",
                 measurementId: "G-42808G7FQ5",
                 databaseURL: "https://conner4cuts-default-rtdb.firebaseio.com/",
-              }
+            },
+            kakaoConfig: {
+                restApiKey: '50f932e78ecb3d107e2890d9311786ac',
+                jsKey: '7b3fdb9ec68d1a8918eab93873233207',
+            }
         }
         
     },
