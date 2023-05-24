@@ -21,16 +21,18 @@
 				<span>{{ store.selectedIndex.size }} / 4</span>
 			</div>
 		</div>
-		<div
-			class="btn film"
-			:class="{ active: store.selectedIndex.size == 4 }"
-			@click="nextStep"
-		>
-			<img
-				src="~/assets/images/film.png"
-				alt=""
-				width="70"
-			/>
+		<div class="btn-group">
+			<div
+				class="btn film"
+				:class="{ active: store.selectedIndex.size == 4 }"
+				@click="nextStep"
+			>
+				<img
+					src="~/assets/images/film.png"
+					alt=""
+					width="70"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -116,10 +118,6 @@
 		}
 		.film {
 			opacity: 0.3;
-			position: fixed;
-			bottom: 30px;
-			right: 30px;
-			cursor: pointer;
 			transform-origin: 50% 50%;
 			&.active {
 				opacity: 1;

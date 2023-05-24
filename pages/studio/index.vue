@@ -28,17 +28,19 @@
 			</div>
 		</div>
 		<div
-			class="gallery"
+			class="btn-group"
 			v-if="store.images.length < 8"
 		>
-			<img
-				src="~/assets/images/gallery.png"
-				alt=""
-				width="70"
-			/>
-			<span>
-				{{ store.images.length }}
-			</span>
+			<div class="btn gallery">
+				<img
+					src="~/assets/images/gallery.png"
+					alt=""
+					width="70"
+				/>
+				<span>
+					{{ store.images.length }}
+				</span>
+			</div>
 		</div>
 		<!-- <div @click="stopStream">중지</div> -->
 	</div>
@@ -215,9 +217,7 @@
 		}
 
 		.gallery {
-			position: fixed;
-			bottom: 30px;
-			right: 30px;
+			position: relative;
 			span {
 				font-weight: bold;
 				font-size: 0.5em;

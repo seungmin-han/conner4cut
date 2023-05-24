@@ -239,19 +239,5 @@
 				border-radius: 50%;
 			}
 		}
-
-		.btn-group {
-			position: fixed;
-			bottom: 30px;
-			right: 30px;
-			display: flex;
-			.btn {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 0 10px;
-				cursor: pointer;
-			}
-		}
 	}
 </style>

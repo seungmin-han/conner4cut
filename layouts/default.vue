@@ -27,6 +27,20 @@
 		// font-family: Papyrus;
 		font-family: Viner Hand ITC;
 	}
+
+	.btn-group {
+		position: fixed;
+		bottom: 30px;
+		right: 30px;
+		display: flex;
+		.btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 10px;
+			cursor: pointer;
+		}
+	}
 </style>
 <style lang="scss" scoped>
 	#wrapper {
