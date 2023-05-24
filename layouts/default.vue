@@ -1,5 +1,6 @@
 <template>
 	<div id="wrapper">
+		<Header></Header>
 		<div id="content">
 			<slot />
 		</div>
@@ -26,6 +27,14 @@
 		background-size: contain;
 		// font-family: Papyrus;
 		font-family: Viner Hand ITC;
+	}
+
+	.main {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.btn-group {

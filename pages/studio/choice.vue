@@ -69,11 +69,6 @@
 
 <style lang="scss" scoped>
 	.main {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
 		.frame {
 			max-width: 600px;
 			display: flex;
