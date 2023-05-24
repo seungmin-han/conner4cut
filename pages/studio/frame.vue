@@ -100,7 +100,10 @@
 	});
 
 	onMounted(() => {
-		Kakao.init(useRuntimeConfig().public.kakaoConfig.jsKey);
+		if (!Kakao.isInitialized()) {
+			Kakao.init(useRuntimeConfig().public.kakaoConfig.jsKey);
+		}
+
 		gsap.from('.main', {
 			y: -300,
 			opacity: 0,
