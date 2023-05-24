@@ -34,6 +34,7 @@
 		<div class="btn-group">
 			<div
 				class="btn upload"
+				:class="{ uploaded: isUploaded }"
 				@click="upload"
 			>
 				<img
@@ -80,11 +81,18 @@
 	import dayjs from 'dayjs';
 
 	let showToast = ref(false);
+	let isUploaded = ref(false);
 
 	const imageStore = useImageStore();
 	const kakaoStore = useKakaoStore();
 	const frame = ref('');
 	const color = ref('#ffffff');
+
+	watch(color, (newValue, oldValue) => {
+		if (newValue != oldValue) {
+			isUploaded.value = false;
+		}
+	});
 
 	const config = useRuntimeConfig();
 	const app = initializeApp(config.public.firebaseConfig);
@@ -136,6 +144,9 @@
 	};
 
 	const upload = () => {
+		if (isUploaded.value) {
+			return;
+		}
 		const win = window.open('/login', 'login', '_top', 'width=300,height=500');
 		const timer = setInterval(() => {
 			if (win.closed) {
@@ -152,6 +163,7 @@
 							timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
 						}).then(() => {
 							showToast.value = true;
+							isUploaded.value = true;
 						});
 					});
 				});
@@ -215,6 +227,11 @@
 				height: 100%;
 				box-shadow: 0px 0px 10px;
 			}
+		}
+
+		.uploaded {
+			cursor: not-allowed;
+			opacity: 0.3;
 		}
 
 		.color-picker {
