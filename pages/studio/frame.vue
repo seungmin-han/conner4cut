@@ -152,7 +152,7 @@
 	};
 
 	const upload = link => {
-		const win = window.open(`${window.location.origin}/login', 'login', '_top', 'width=300,height=500`);
+		const win = window.open(`${window.location.origin}/login`, 'login', '_top', 'width=300,height=500');
 		const timer = setInterval(() => {
 			if (win.closed) {
 				clearInterval(timer);
