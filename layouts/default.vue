@@ -64,9 +64,11 @@
 
 		.footer {
 			position: fixed;
-			left: 5px;
+			left: 0px;
 			bottom: 0px;
 			a {
+				display: block;
+				padding: 20px;
 				text-decoration: underline;
 				font-family: consolas;
 				color: #000;
