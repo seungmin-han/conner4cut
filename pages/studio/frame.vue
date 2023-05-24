@@ -54,6 +54,16 @@
 				/>
 			</div>
 			<div
+				class="btn gallery"
+				@click="goGallery"
+			>
+				<img
+					src="~/assets/images/gallery3.png"
+					alt=""
+					width="75"
+				/>
+			</div>
+			<div
 				class="btn home"
 				@click="goHome"
 			>
@@ -119,7 +129,15 @@
 	});
 
 	const goHome = () => {
-		fadeOut(useRouter().replace('/'));
+		fadeOut('.main', () => {
+			useRouter().replace('/');
+		});
+	};
+
+	const goGallery = () => {
+		fadeOut('.main', () => {
+			useRouter().push('/studio/gallery');
+		});
 	};
 
 	const getPhotoDataURL = async () => {
@@ -154,8 +172,10 @@
 				Kakao.Auth.setAccessToken(sessionStorage.getItem('token'));
 				Kakao.API.request({
 					url: '/v2/user/me',
+					data: { property_keys: ['kakao_account.profile'] },
 				}).then(res => {
 					kakaoStore.id = res.id;
+					kakaoStore.accountInfo = res.kakao_account;
 					getPhotoDataURL().then(url => {
 						const newKey = fbpush(fbchild(fbref(db), `photo/${res.id}`)).key;
 						fbset(fbref(db, `photo/${res.id}/${newKey}`), {
@@ -174,11 +194,6 @@
 
 <style lang="scss" scoped>
 	.main {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
 		.frame_wrap {
 			position: relative;
 
