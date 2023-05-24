@@ -9,26 +9,27 @@
 				id=""
 			/>
 		</div>
-
-		<div
-			ref="frame"
-			class="frame"
-			:class="{ shadow: !isCopied }"
-			:style="`background-color:${color}`"
-		>
-			<div class="logo">
-				<span :style="`color: ${fontColor}`">Conner 4 Cuts</span>
-			</div>
+		<div class="frame_wrap">
 			<div
-				v-for="(image, idx) in selectedImage"
-				:key="idx"
-				class="image"
+				ref="frame"
+				class="frame"
+				:style="`background-color:${color}`"
 			>
-				<img
-					:src="image"
-					alt=""
-				/>
+				<div class="logo">
+					<span :style="`color: ${fontColor}`">Conner 4 Cuts</span>
+				</div>
+				<div
+					v-for="(image, idx) in selectedImage"
+					:key="idx"
+					class="image"
+				>
+					<img
+						:src="image"
+						alt=""
+					/>
+				</div>
 			</div>
+			<div class="shadow"></div>
 		</div>
 		<div class="btn-group">
 			<div
@@ -76,12 +77,12 @@
 
 	const imageStore = useImageStore();
 	const kakaoStore = useKakaoStore();
-
 	const frame = ref('');
-
-	let isCopied = ref(false);
-
 	const color = ref('#ffffff');
+
+	const config = useRuntimeConfig();
+	const app = initializeApp(config.public.firebaseConfig);
+	const db = getDatabase(app);
 
 	const fontColor = computed(() => {
 		const red = parseInt(color.value.slice(1, 3), 16);
@@ -90,10 +91,6 @@
 
 		return red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#ffffff';
 	});
-
-	const config = useRuntimeConfig();
-	const app = initializeApp(config.public.firebaseConfig);
-	const db = getDatabase(app);
 
 	const selectedImage = [...imageStore.selectedIndex].map(v => {
 		return imageStore.images[v];
@@ -104,45 +101,26 @@
 			Kakao.init(useRuntimeConfig().public.kakaoConfig.jsKey);
 		}
 
-		gsap.from('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		});
+		fadeIn();
 	});
 
-	const fadeOut = async () => {
-		await gsap.to('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		});
-	};
-
 	const goHome = () => {
-		fadeOut().then(() => {
-			useRouter().replace('/');
-		});
+		fadeOut(useRouter().replace('/'));
 	};
 
 	const getPhotoDataURL = async () => {
-		isCopied.value = true;
-		return new Promise((resolve, reject) =>
-			setTimeout(() => {
-				html2canvas(frame.value)
-					.then(canvas => {
-						isCopied.value = false;
-						resolve(canvas.toDataURL('image/jpeg'));
-					})
-					.catch(err => {
-						reject(err);
-					});
-			}, 0)
-		);
+		return new Promise((resolve, reject) => {
+			html2canvas(frame.value)
+				.then(canvas => {
+					resolve(canvas.toDataURL('image/jpeg'));
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
 	};
 
 	const download = () => {
-		isCopied.value = true;
 		getPhotoDataURL().then(url => {
 			let link = document.createElement('a');
 			link.download = 'Conner4Cuts.jpg';
@@ -156,7 +134,6 @@
 		const timer = setInterval(() => {
 			if (win.closed) {
 				clearInterval(timer);
-				console.log(sessionStorage.getItem('token'));
 				Kakao.Auth.setAccessToken(sessionStorage.getItem('token'));
 				Kakao.API.request({
 					url: '/v2/user/me',
@@ -182,39 +159,49 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		.frame {
-			text-align: center;
-			max-width: 300px;
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
-			align-items: center;
-			z-index: 3;
+		.frame_wrap {
 			position: relative;
-			background-color: #fff;
-			padding: 50px 10px;
-			&.shadow {
-				box-shadow: 0px 0px 10px;
-			}
 
-			.image {
+			.frame {
+				text-align: center;
+				max-width: 300px;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: center;
+				z-index: 3;
 				position: relative;
-				height: auto;
-				width: 100%;
-				img {
-					box-sizing: border-box;
+				background-color: #fff;
+				padding: 50px 10px;
+
+				.image {
+					position: relative;
+					height: auto;
 					width: 100%;
-					transform: rotateY(180deg);
+					img {
+						box-sizing: border-box;
+						width: 100%;
+						transform: rotateY(180deg);
+					}
+				}
+
+				.logo {
+					font-weight: 500;
+					font-size: 1.2em;
+					position: absolute;
+					bottom: 10px;
+					left: 50%;
+					transform: translateX(-50%);
 				}
 			}
 
-			.logo {
-				font-weight: 500;
-				font-size: 1.2em;
+			.shadow {
 				position: absolute;
-				bottom: 10px;
-				left: 50%;
-				transform: translateX(-50%);
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				box-shadow: 0px 0px 10px;
 			}
 		}
 
