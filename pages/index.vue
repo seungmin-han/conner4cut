@@ -15,7 +15,7 @@
 	import { gsap } from 'gsap';
 
 	const start = () => {
-		fadeOut('.main', () => {
+		fadeOut('.main, .login', () => {
 			useRouter().push('/studio');
 		});
 	};
@@ -26,7 +26,7 @@
 			start();
 		});
 
-		fadeIn();
+		fadeIn('.main, .login');
 
 		gsap.to('.arrow', {
 			top: 45,
