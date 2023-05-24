@@ -121,11 +121,7 @@
 				store.addImage(pic.toDataURL('image/jpeg'));
 				if (store.images.length >= 8) {
 					stopStream();
-					gsap.to('.main', {
-						opacity: 0,
-						y: -300,
-						duration: 0.5,
-					}).then(() => {
+					fadeOut('.main', () => {
 						useRouter().replace('/studio/choice');
 					});
 				}
@@ -159,11 +155,7 @@
 			cam.value.onloadedmetadata = () => {
 				cam.value.play();
 				isLoading.value = false;
-				gsap.from('.frame', {
-					y: -300,
-					opacity: 0,
-					duration: 0.5,
-				});
+				fadeIn('.frame');
 
 				onKeyStroke(' ', e => {
 					e.preventDefault();

@@ -36,15 +36,10 @@
 </template>
 
 <script setup>
-	import { gsap } from 'gsap';
 	import { useImageStore } from '~/stores/image';
 
 	onMounted(() => {
-		gsap.from('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		});
+		fadeIn();
 	});
 
 	const store = useImageStore();
@@ -64,11 +59,7 @@
 		if (store.selectedIndex.size != 4) {
 			return;
 		}
-		gsap.to('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		}).then(() => {
+		fadeOut('.main', () => {
 			useRouter().push('/studio/frame');
 		});
 	};

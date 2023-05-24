@@ -15,11 +15,7 @@
 	import { gsap } from 'gsap';
 
 	const start = () => {
-		gsap.to('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		}).then(() => {
+		fadeOut('.main', () => {
 			useRouter().push('/studio');
 		});
 	};
@@ -30,11 +26,7 @@
 			start();
 		});
 
-		gsap.from('.main', {
-			y: -300,
-			opacity: 0,
-			duration: 0.5,
-		});
+		fadeIn();
 
 		gsap.to('.arrow', {
 			top: 45,
