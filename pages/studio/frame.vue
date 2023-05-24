@@ -179,9 +179,13 @@
 					height: auto;
 					width: 100%;
 					img {
+						display: block;
 						box-sizing: border-box;
 						width: 100%;
 						transform: rotateY(180deg);
+					}
+					&:not(:last-child) {
+						margin-bottom: 10px;
 					}
 				}
 
