@@ -95,6 +95,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			padding: 90px 0;
+			justify-content: center;
 			.photo_wrap {
 				position: relative;
 				margin: 10px;
