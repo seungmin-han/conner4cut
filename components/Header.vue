@@ -140,6 +140,7 @@
 				.profile-img {
 					cursor: pointer;
 					border-radius: 50%;
+					border: 3px solid #232323;
 					width: 150px;
 					height: 150px;
 					overflow: hidden;
