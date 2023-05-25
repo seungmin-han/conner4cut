@@ -38,6 +38,7 @@
 	import { useKakaoStore } from '~/stores/kakao';
 	const kakaoStore = useKakaoStore();
 	const router = useRouter();
+	const route = useRoute();
 	let { id, account } = storeToRefs(kakaoStore);
 
 	watch(id, v => {
@@ -79,6 +80,9 @@
 	};
 
 	const goGallery = () => {
+		if (route.path == '/studio/gallery') {
+			return;
+		}
 		fadeOut(isMain.value ? '.main, .profile' : '.main', () => {
 			router.push({
 				path: '/studio/gallery',
