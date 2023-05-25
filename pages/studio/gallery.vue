@@ -1,20 +1,42 @@
 <template>
 	<div class="main">
-		<div class="container">
-			<template v-for="user in list">
-				<div
-					v-for="photo in user"
-					class="photo_wrap"
-				>
-					<div class="image">
-						<img
-							:src="photo.href"
-							alt=""
-						/>
-					</div>
-					<div class="shadow"></div>
+		<div
+			class="container"
+			v-if="list"
+		>
+			<!-- <template v-for="user in list"> -->
+			<div
+				v-for="photo in list"
+				class="photo_wrap"
+			>
+				<div class="image">
+					<img
+						:src="photo.href"
+						alt=""
+					/>
 				</div>
-			</template>
+				<div class="shadow"></div>
+			</div>
+			<!-- </template> -->
+		</div>
+		<div
+			v-else
+			class="empty"
+		>
+			Empty Photo
+			<p @click="goHome">home</p>
+		</div>
+		<div class="btn-group">
+			<div
+				class="btn home"
+				@click="goHome"
+			>
+				<img
+					src="~/assets/images/home.png"
+					alt=""
+					width="70"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,20 +60,37 @@
 		} else {
 			fadeIn();
 		}
-		fget(fchild(fref(db), `photo`))
+		fget(fchild(fref(db), `photo/${store.id}`))
 			.then(res => {
 				list.value = res.val();
 				console.log(list.value);
 			})
 			.catch(() => {
-				alert('잘못된 접근입니다.');
+				alert('로그인 후 접근 가능합니다.');
 				router.replace('/');
 			});
 	});
+
+	const goHome = () => {
+		fadeOut('.main', () => {
+			router.push('/');
+		});
+	};
 </script>
 
 <style lang="scss" scoped>
 	.main {
+		.empty {
+			font-size: 2em;
+			text-align: center;
+			p {
+				cursor: pointer;
+				padding-top: 30px;
+				font-family: sans-serif;
+				font-size: 1rem;
+				text-decoration: underline;
+			}
+		}
 		.container {
 			display: flex;
 			.photo_wrap {
