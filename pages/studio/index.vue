@@ -54,6 +54,8 @@
 
 	gsap.registerPlugin(MotionPathPlugin);
 
+	const router = useRouter();
+
 	const store = useImageStore();
 	let isLoading = ref(true);
 	const cam = ref(null);
@@ -124,7 +126,7 @@
 				if (store.images.length >= 8) {
 					stopStream();
 					fadeOut('.main', () => {
-						useRouter().replace('/studio/choice');
+						router.replace('/studio/choice');
 					});
 				}
 			});
@@ -157,7 +159,7 @@
 			cam.value.onloadedmetadata = () => {
 				cam.value.play();
 				isLoading.value = false;
-				fadeIn('.frame');
+				fadeIn('.frame, .profile');
 
 				onKeyStroke(' ', e => {
 					e.preventDefault();
@@ -166,7 +168,7 @@
 			};
 		} catch (e) {
 			// go home
-			useRouter().push('/');
+			router.push('/');
 			console.log('error:', e);
 		}
 	};

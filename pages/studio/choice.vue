@@ -40,11 +40,12 @@
 <script setup>
 	import { useImageStore } from '~/stores/image';
 
+	const router = useRouter();
+	const store = useImageStore();
+
 	onMounted(() => {
 		fadeIn();
 	});
-
-	const store = useImageStore();
 
 	const pick = idx => {
 		if (store.isSelected(idx)) {
@@ -62,7 +63,7 @@
 			return;
 		}
 		fadeOut('.main', () => {
-			useRouter().push('/studio/frame');
+			router.push('/studio/frame');
 		});
 	};
 </script>

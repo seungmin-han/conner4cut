@@ -124,15 +124,17 @@
 		fadeIn();
 	});
 
+	const router = useRouter();
+
 	const goHome = () => {
 		fadeOut('.main', () => {
-			useRouter().replace('/');
+			router.replace('/');
 		});
 	};
 
 	const goGallery = () => {
 		fadeOut('.main', () => {
-			useRouter().push('/studio/gallery');
+			router.push('/studio/gallery');
 		});
 	};
 
