@@ -93,6 +93,8 @@
 		}
 		.container {
 			display: flex;
+			flex-wrap: wrap;
+			padding: 90px 0;
 			.photo_wrap {
 				position: relative;
 				margin: 10px;
