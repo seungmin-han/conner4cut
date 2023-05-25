@@ -176,15 +176,19 @@
 	};
 
 	const upload = () => {
+		isUploaded.value = true;
 		getPhotoDataURL().then(url => {
 			const newKey = fbpush(fbchild(fbref(db), `photo/${kakaoStore.id}`)).key;
 			fbset(fbref(db, `photo/${kakaoStore.id}/${newKey}`), {
 				href: url,
 				timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
-			}).then(() => {
-				showToast.value = true;
-				isUploaded.value = true;
-			});
+			})
+				.then(() => {
+					showToast.value = true;
+				})
+				.catch(() => {
+					isUploaded.value = false;
+				});
 		});
 	};
 </script>
