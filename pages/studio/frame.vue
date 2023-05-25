@@ -35,7 +35,7 @@
 			<div
 				class="btn upload"
 				:class="{ uploaded: isUploaded }"
-				@click="upload"
+				@click="checkBeforeUpload"
 			>
 				<img
 					src="~/assets/images/upload.png"
@@ -159,34 +159,33 @@
 		});
 	};
 
-	const upload = () => {
+	const checkBeforeUpload = () => {
 		if (isUploaded.value) {
 			return;
 		}
-		const win = window.open('/login', 'login', '_top', 'width=300,height=500');
-		const timer = setInterval(() => {
-			if (win.closed) {
-				clearInterval(timer);
-				Kakao.Auth.setAccessToken(sessionStorage.getItem('token'));
-				Kakao.API.request({
-					url: '/v2/user/me',
-					data: { property_keys: ['kakao_account.profile'] },
-				}).then(res => {
-					kakaoStore.id = res.id;
-					kakaoStore.accountInfo = res.kakao_account;
-					getPhotoDataURL().then(url => {
-						const newKey = fbpush(fbchild(fbref(db), `photo/${res.id}`)).key;
-						fbset(fbref(db, `photo/${res.id}/${newKey}`), {
-							href: url,
-							timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
-						}).then(() => {
-							showToast.value = true;
-							isUploaded.value = true;
-						});
-					});
-				});
-			}
-		}, 1000);
+
+		if (kakaoStore.id) {
+			upload();
+		} else {
+			kakaoLogin().then(res => {
+				kakaoStore.id = res.id;
+				kakaoStore.account = res.kakao_account;
+				upload();
+			});
+		}
+	};
+
+	const upload = () => {
+		getPhotoDataURL().then(url => {
+			const newKey = fbpush(fbchild(fbref(db), `photo/${kakaoStore.id}`)).key;
+			fbset(fbref(db, `photo/${kakaoStore.id}/${newKey}`), {
+				href: url,
+				timestamp: dayjs().format('YYYY-MM-DD:HH:mm:ss'),
+			}).then(() => {
+				showToast.value = true;
+				isUploaded.value = true;
+			});
+		});
 	};
 </script>
 
