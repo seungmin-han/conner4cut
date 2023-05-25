@@ -260,6 +260,7 @@
 				width: 20px;
 				height: 20px;
 				border: none;
+				cursor: pointer;
 			}
 			input::-webkit-color-swatch-wrapper {
 				padding: 0;
