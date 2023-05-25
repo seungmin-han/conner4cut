@@ -131,7 +131,7 @@
 				flex-direction: row;
 				align-items: center;
 				justify-content: end;
-				padding: 20px;
+				padding: 20px 20px 0 20px;
 				span {
 					padding-right: 10px;
 					font-weight: bold;
