@@ -20,14 +20,14 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             firebaseConfig: {
-                apiKey: "AIzaSyACCN2_1ZMB1GliF9x4sRHxbqj7G2IFbXQ",
-                authDomain: "conner4cuts.firebaseapp.com",
-                projectId: "conner4cuts",
-                storageBucket: "conner4cuts.appspot.com",
-                messagingSenderId: "223296145979",
-                appId: "1:223296145979:web:2fca5e746a27c3a1ed2a1e",
-                measurementId: "G-42808G7FQ5",
-                databaseURL: "https://conner4cuts-default-rtdb.firebaseio.com/",
+                apiKey: "AIzaSyBFOsWORb8IrNeP7xaW1_BtoCO5VmtswM8",
+                authDomain: "conner4cuts-51996.firebaseapp.com",
+                projectId: "conner4cuts-51996",
+                storageBucket: "conner4cuts-51996.appspot.com",
+                messagingSenderId: "47233797236",
+                appId: "1:47233797236:web:418abd39634345597fd521",
+                measurementId: "G-GMZ14HJ5W3",
+                databaseURL: "https://conner4cuts-51996-default-rtdb.firebaseio.com/",
             },
             kakaoConfig: {
                 restApiKey: '50f932e78ecb3d107e2890d9311786ac',
